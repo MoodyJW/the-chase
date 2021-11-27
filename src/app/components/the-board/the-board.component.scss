@@ -1,0 +1,11 @@
+.the-board {
+  background: var(--secondary-background);
+  height: 100%;
+  padding: 1em;
+  margin: 0.5em;
+  border: var(--primary-border-color) 0.2em solid;
+
+  .play-area {
+    height: 100%;
+  }
+}
