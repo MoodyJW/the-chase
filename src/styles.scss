@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Roboto+Mono:wght@400;600&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,6 +8,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  --primary-background: #333;
+  --secondary-background: rgba(75, 75, 75, 1);
+  --primary-border-color: #ffffffee;
+  --primary-text-color: #ffffffee;
+}
+
 body {
+  background: var(--primary-background);
+  color: var(--primary-text-color);
+  font-size: 16px;
+  font-family: "Fira Mono", monospace, "Roboto Mono", monospace;
   min-height: 100vh;
+  padding: 1em;
 }
