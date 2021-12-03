@@ -1,5 +1,18 @@
 <div class="the-board">
+  <button (click)="startGame()">start</button>
+  <button (click)="resetGame()">reset</button>
+  <button (click)="pauseGame()">pause</button>
+  <button (click)="resumeGame()">resume</button>
   <div class="play-area">
-    <app-the-dot></app-the-dot>
+    <div *ngFor="let timer of timers; index as i">
+      <div
+        (click)="resetDot(i)"
+        class="dot"
+        *ngIf="timer <= difficultyTimer && !gameIsOver; else gameOverBlock"
+      >
+        {{ timer }}
+      </div>
+      <ng-template #gameOverBlock> GAME OVER </ng-template>
+    </div>
   </div>
 </div>
