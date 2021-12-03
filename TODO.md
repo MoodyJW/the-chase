@@ -1,9 +1,17 @@
-Everything!
-
-General idea: small game where user chases a dot around the screen
-
-Components needed:
-
-- main: holds everything
-- board: the play area, likely subscribing to mouse/click/tap events and setting up communication between the dot and the mouse/tap
-- dot: the thing palyer chases, will need to react to mouse entering/clicking and touch
+- [x] start
+- [x] pause
+- [x] resume
+- [x] reset
+- [x] game over
+- [ ] maybe inputs for difficulty settings (more dots, less time, etc)
+- [ ] disable buttons based on current state (start disabled while running, etc)
+- [ ] move dot when it's clicked
+- [ ] maybe have chaos setting where all dots move when one is clicked?
+- [ ] styles
+  - [ ] buttons
+  - [ ] dots
+    - [ ] might add some sort of animation for the timer
+  - [ ] board
+    - [ ] need to contain the dots
+    - [ ] not really sure what it will look like overall
+- [ ] write some tests...
