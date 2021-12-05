@@ -1,0 +1,16 @@
+.dot {
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transform: translate(random(500) * 3px, 50%);
+  margin-top: 10px;
+  height: 100px;
+  width: 100px;
+  background-color: lightgray;
+  border-radius: 50%;
+  border: 2px solid black;
+  transition: all 0.6s ease-in-out;
+  font-size: 2em;
+  color: black;
+  cursor: pointer;
+}

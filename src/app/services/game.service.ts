@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { timer, of, Subject } from 'rxjs';
+import { timer, of, Subject, BehaviorSubject } from 'rxjs';
 import { switchMap, scan, take } from 'rxjs/operators';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { switchMap, scan, take } from 'rxjs/operators';
 export class GameService {
   dots$: Subject<string>[];
   timer: number;
+  gameIsRunning$ = new BehaviorSubject(false);
 
   createDots(difficulty) {
     this.dots$ = Array.from({ length: difficulty }, () => new Subject());
@@ -45,6 +46,8 @@ export class GameService {
 
   startGame() {
     this.dots$[0].next('start');
+
+    this.gameIsRunning$.next(true);
   }
 
   resetTimer(index) {
@@ -55,18 +58,24 @@ export class GameService {
     timers.forEach((timer, index) => {
       this.dots$[index].next('pause');
     });
+
+    this.gameIsRunning$.next(false);
   }
 
   resumeGame(timers) {
     timers.forEach((timer, index) => {
-      this.timer = timer;
+      this.timer = timer + 1;
       this.dots$[index].next('resume');
     });
+
+    this.gameIsRunning$.next(true);
   }
 
   endGame() {
     this.dots$.forEach((dot) => {
       dot.next('stop');
     });
+
+    this.gameIsRunning$.next(false);
   }
 }

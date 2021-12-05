@@ -1,4 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
+import {
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameService } from 'src/app/services/game.service';
 
@@ -13,14 +26,23 @@ export interface Dot {
   styleUrls: ['./the-board.component.scss'],
 })
 export class TheBoardComponent implements OnInit {
-  timersArray = Array.from(Array(10).keys());
-  timers$ = [];
+  // timersArray = Array.from(Array(10).keys());
+  timers$: Observable<any>[] = [];
+  gameState = {
+    running: false,
+    paused: false,
+    finished: false,
+  };
+  // difficultyOptions
   difficultyLength = 15;
   difficultyTimer = 11;
   timers = [this.difficultyTimer - 1];
-  gameIsOver = false;
-
-  constructor(private gameService: GameService) {}
+  gameIsRunning$: Observable<boolean>;
+  isClicked = false;
+  translate;
+  constructor(private gameService: GameService) {
+    this.gameIsRunning$ = this.gameService.gameIsRunning$;
+  }
 
   ngOnInit(): void {
     this.gameService.createDots(this.difficultyLength);
@@ -38,18 +60,24 @@ export class TheBoardComponent implements OnInit {
     });
   }
 
-  startGame() {
-    this.gameIsOver = false;
+  updateGameState() {
+    if (this.gameState.running) return this.pauseGame();
+    if (this.gameState.paused) return this.resumeGame();
+    return this.startGame();
+  }
+
+  startGame(): void {
     this.gameService.startGame();
+    this.gameState = { running: true, paused: false, finished: false };
   }
 
   resetGame() {
     this.gameService.endGame();
-    this.gameIsOver = false;
+    this.gameState = { running: false, paused: false, finished: false };
     this.timers = [this.difficultyTimer - 1];
   }
 
-  resetDot(index) {
+  resetDot(event, index) {
     this.gameService.resetTimer(index);
     if (this.timers.length < this.difficultyLength) {
       this.timers.push(this.difficultyTimer);
@@ -59,15 +87,26 @@ export class TheBoardComponent implements OnInit {
 
   pauseGame() {
     this.gameService.pauseGame(this.timers);
+    this.gameState = { running: false, paused: true, finished: false };
   }
 
   resumeGame() {
     this.gameService.resumeGame(this.timers);
+    this.gameState = { running: true, paused: false, finished: false };
   }
 
   endGame() {
     this.gameService.endGame();
     this.timers = [this.difficultyTimer - 1];
-    this.gameIsOver = true;
+    this.gameState = { running: false, paused: false, finished: true };
+  }
+
+  random(timer) {
+    return Math.random() * timer;
+  }
+
+  getTranslate(timer) {
+    this.translate = `translate(${this.random(timer)}, ${this.random(timer)})`;
+    // return `translate(${this.random(timer)}, ${this.random(timer)})`;
   }
 }

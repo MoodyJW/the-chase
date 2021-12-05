@@ -1,27 +1,36 @@
+.actions-container {
+  display: flex;
+  place-items: center;
+  place-content: flex-end;
+  gap: 1em;
+  margin: 0 0 1em 0;
+}
+
 .the-board {
   background: var(--secondary-background);
   height: 50vh;
   padding: 1em;
-  margin: 0.5em;
   border: var(--primary-border-color) 0.2em solid;
 
   .play-area {
     height: 100%;
-  }
-}
-.dot {
-  margin-top: 10px;
-  height: 100px;
-  width: 100px;
-  background-color: lightgray;
-  border-radius: 50%;
-  transition: all 0.6s ease-in-out;
-  text-align: center;
-  line-height: 100px;
-  font-size: 2em;
-  color: black;
+    display: flex;
+    flex-flow: wrap;
 
-  &.first {
-    display: hidden;
+    .dot {
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+      height: 100px;
+      width: 100px;
+      background-color: lightgray;
+      border-radius: 50%;
+      border: 2px solid black;
+      transition: all 0.6s ease-in-out;
+      font-size: 2em;
+      color: black;
+      cursor: pointer;
+    }
   }
 }
