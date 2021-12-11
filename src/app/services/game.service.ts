@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { timer, of, Subject, BehaviorSubject } from 'rxjs';
+import { timer, of, Subject, BehaviorSubject, Observable } from 'rxjs';
 import { switchMap, scan, take } from 'rxjs/operators';
 
 @Injectable({
@@ -14,13 +14,13 @@ export class GameService {
     this.dots$ = Array.from({ length: difficulty }, () => new Subject());
   }
 
-  getTime(index, startTime) {
+  getTime(index, startTime): Observable<number | string> {
     return this.dots$[index].pipe(
       switchMap((state) => this.checkState(state, index, startTime))
     );
   }
 
-  checkState(state, index, startTime) {
+  checkState(state, index, startTime): Observable<number | string> {
     let returnValue;
     switch (state) {
       case 'start':

@@ -7,30 +7,37 @@
 }
 
 .the-board {
-  background: var(--secondary-background);
-  height: 50vh;
-  padding: 1em;
-  border: var(--primary-border-color) 0.2em solid;
+  height: 80vh;
 
   .play-area {
     height: 100%;
-    display: flex;
-    flex-flow: wrap;
+    position: relative;
 
     .dot {
       text-align: center;
       text-decoration: none;
-      display: inline-block;
       margin-top: 10px;
-      height: 100px;
-      width: 100px;
-      background-color: lightgray;
+      height: 50px;
+      width: 50px;
+      background-color: green;
       border-radius: 50%;
       border: 2px solid black;
-      transition: all 0.6s ease-in-out;
-      font-size: 2em;
+      transition: all 0.66s ease-in-out;
+      font-size: 1em;
       color: black;
       cursor: pointer;
+      position: absolute;
+    }
+
+    .game-over {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: red;
+      text-shadow: 2px 2px black;
+      width: 100%;
     }
   }
 }

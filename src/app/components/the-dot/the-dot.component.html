@@ -1,10 +1,3 @@
-<div *ngFor="let timer of timers; index as i" #dotRef>
-  <button
-    class="dot"
-    *ngIf="timer <= difficultyTimer && !gameState.finished; else gameOverBlock"
-    (click)="resetDot($event, i)"
-  >
-    {{ timer }}
-  </button>
-  <ng-template #gameOverBlock> GAME OVER </ng-template>
-</div>
+<nav>
+  <button (click)="toggle()">Toggle Open/Close</button>
+</nav>

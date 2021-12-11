@@ -7,53 +7,49 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameService } from 'src/app/services/game.service';
+import { HostBinding } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
 
+export let v = 300;
 @Component({
   selector: 'app-the-dot',
   templateUrl: './the-dot.component.html',
   styleUrls: ['./the-dot.component.scss'],
+  animations: [
+    trigger('openClose', [
+      // ...
+      state(
+        'open',
+        style({
+          transform: `translate(${v}px, 50%)`,
+        })
+      ),
+      state(
+        'closed',
+        style({
+          transform: `translate(${v}px, 50%)`,
+        })
+      ),
+      transition('open => closed', [animate('.2s')]),
+      transition('closed => open', [animate('0.5s')]),
+    ]),
+  ],
 })
 export class TheDotComponent implements OnInit {
-  timers$: Observable<any>[] = [];
-  difficultyLength = 15;
-  difficultyTimer = 11;
-  timers = [this.difficultyTimer - 1];
-  gameIsRunning$: Observable<boolean>;
-  gameState = {
-    running: false,
-    paused: false,
-    finished: false,
-  };
-
-  constructor(private gameService: GameService) {}
-
-  ngOnInit(): void {
-    this.gameService.createDots(this.difficultyLength);
-    Array.from(Array(this.difficultyLength).keys()).map((item, index) => {
-      this.timers$.push(this.gameService.getTime(index, this.difficultyTimer));
-    });
-    this.timers$.forEach((time$, index) => {
-      time$.subscribe((time) => {
-        if (time === 0) {
-          this.endGame();
-          return;
-        }
-        this.timers[index] = time;
-      });
-    });
+  isOpen = true;
+  values = Math.random() * 300;
+  toggle() {
+    this.isOpen = !this.isOpen;
+    v = Math.random() * 300;
   }
 
-  endGame() {
-    this.gameService.endGame();
-    this.timers = [this.difficultyTimer - 1];
-    this.gameState = { running: false, paused: false, finished: true };
-  }
-
-  resetDot(event, index) {
-    this.gameService.resetTimer(index);
-    if (this.timers.length < this.difficultyLength) {
-      this.timers.push(this.difficultyTimer);
-      this.gameService.resetTimer(this.timers.length - 1);
-    }
-  }
+  ngOnInit() {}
 }
+// transform: translate(120px, 50%);
