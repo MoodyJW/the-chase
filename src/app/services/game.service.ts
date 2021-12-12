@@ -8,7 +8,7 @@ import { switchMap, scan, take } from 'rxjs/operators';
 export class GameService {
   dots$: Subject<string>[];
   timer: number;
-  timers;
+  timers: number[];
   gameIsRunning$ = new BehaviorSubject(false);
   gameIsOver$ = new BehaviorSubject(false);
   gameIsPaused$ = new BehaviorSubject(false);
@@ -24,7 +24,62 @@ export class GameService {
     );
   }
 
-  checkState(
+  startGame(): void {
+    this.dots$[0].next('start');
+    this.gameIsRunning$.next(true);
+    this.gameIsPaused$.next(false);
+    this.gameIsOver$.next(false);
+  }
+
+  resetTimer(index: number): void {
+    this.dots$[index].next('start');
+  }
+
+  pauseGame(): void {
+    this.dots$.forEach((dot) => {
+      dot.next('pause');
+    });
+    this.gameIsPaused$.next(true);
+    this.gameIsRunning$.next(false);
+    this.timersNeedReset$.next(false);
+  }
+
+  updateTimers(timers: number[]): void {
+    this.timers = timers;
+  }
+
+  resumeGame(): void {
+    this.timers.forEach((timer, index) => {
+      this.timer = timer + 1;
+      this.dots$[index].next('resume');
+    });
+    this.gameIsPaused$.next(false);
+    this.gameIsRunning$.next(true);
+    this.timersNeedReset$.next(false);
+  }
+
+  resetGame(): void {
+    this.stopDots();
+    this.gameIsRunning$.next(false);
+    this.gameIsPaused$.next(false);
+    this.gameIsOver$.next(false);
+  }
+
+  endGame(): void {
+    this.stopDots();
+    this.gameIsPaused$.next(false);
+    this.gameIsRunning$.next(false);
+    this.gameIsOver$.next(true);
+  }
+
+  private stopDots(): void {
+    this.timersNeedReset$.next(true);
+    this.dots$.forEach((dot) => {
+      dot.next('stop');
+    });
+  }
+
+  private checkState(
     state: string,
     index: number,
     startTime: number
@@ -50,71 +105,5 @@ export class GameService {
         return of('0');
     }
     return returnValue;
-  }
-
-  startGame(): void {
-    this.dots$[0].next('start');
-    this.gameIsRunning$.next(true);
-    this.gameIsPaused$.next(false);
-    this.gameIsOver$.next(false);
-  }
-
-  resetTimer(index): void {
-    this.dots$[index].next('start');
-  }
-
-  pauseGame(): void {
-    // timers.forEach((timer, index) => {
-    //   this.dots$[index].next('pause');
-    // });
-    this.dots$.forEach((dot) => {
-      dot.next('pause');
-    });
-    this.gameIsPaused$.next(true);
-    this.gameIsRunning$.next(false);
-    this.timersNeedReset$.next(false);
-  }
-
-  updateTimers(timers) {
-    this.timers = timers;
-  }
-
-  resumeGame(): void {
-    console.log('service, resumeGame()');
-    this.timers.forEach((timer, index) => {
-      console.log(timer);
-      this.timer = timer + 1;
-      this.dots$[index].next('resume');
-    });
-    // debugger;
-    // this.dots$.forEach((dot) => {
-    //   this.timer = +1;
-    //   dot.next('resume');
-    // });
-    this.gameIsPaused$.next(false);
-    this.gameIsRunning$.next(true);
-
-    this.timersNeedReset$.next(false);
-  }
-
-  resetGame(): void {
-    this.stopDots();
-    this.gameIsRunning$.next(false);
-    this.gameIsPaused$.next(false);
-    this.gameIsOver$.next(false);
-  }
-
-  endGame(): void {
-    this.stopDots();
-    this.gameIsPaused$.next(false);
-    this.gameIsRunning$.next(false);
-    this.gameIsOver$.next(true);
-  }
-
-  stopDots(): void {
-    this.timersNeedReset$.next(true);
-    this.dots$.forEach((dot) => {
-      dot.next('stop');
-    });
   }
 }

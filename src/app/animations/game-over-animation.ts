@@ -30,6 +30,7 @@ export const enterExitLeft = [
     ]),
   ]),
 ];
+
 export const enterExitRight = [
   trigger('enterExitRight', [
     transition(':enter', [
