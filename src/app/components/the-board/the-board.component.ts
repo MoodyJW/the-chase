@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+
 import { GameService } from 'src/app/services/game.service';
 
 export interface Dot {
@@ -12,62 +13,33 @@ export interface Dot {
   templateUrl: './the-board.component.html',
   styleUrls: ['./the-board.component.scss'],
 })
-export class TheBoardComponent implements OnInit {
-  timersArray = Array.from(Array(10).keys());
-  timers$ = [];
-  difficultyLength = 15;
-  difficultyTimer = 11;
-  timers = [this.difficultyTimer - 1];
-  gameIsOver = false;
+export class TheBoardComponent {
+  gameIsRunning$ = this.gameService.gameIsRunning$;
+  gameIsPaused$ = this.gameService.gameIsPaused$;
 
   constructor(private gameService: GameService) {}
 
-  ngOnInit(): void {
-    this.gameService.createDots(this.difficultyLength);
-    Array.from(Array(this.difficultyLength).keys()).map((item, index) => {
-      this.timers$.push(this.gameService.getTime(index, this.difficultyTimer));
-    });
-    this.timers$.forEach((time$, index) => {
-      time$.subscribe((time) => {
-        if (time === 0) {
-          this.endGame();
-          return;
-        }
-        this.timers[index] = time;
-      });
-    });
-  }
-
-  startGame() {
-    this.gameIsOver = false;
-    this.gameService.startGame();
-  }
-
-  resetGame() {
-    this.gameService.endGame();
-    this.gameIsOver = false;
-    this.timers = [this.difficultyTimer - 1];
-  }
-
-  resetDot(index) {
-    this.gameService.resetTimer(index);
-    if (this.timers.length < this.difficultyLength) {
-      this.timers.push(this.difficultyTimer);
-      this.gameService.resetTimer(this.timers.length - 1);
+  updateGameState(): void {
+    if (this.gameIsRunning$.getValue()) this.pauseGame();
+    else if (this.gameIsPaused$.getValue()) this.resumeGame();
+    else {
+      this.startGame();
     }
   }
 
-  pauseGame() {
-    this.gameService.pauseGame(this.timers);
+  resetGame(): void {
+    this.gameService.resetGame();
   }
 
-  resumeGame() {
-    this.gameService.resumeGame(this.timers);
+  private startGame(): void {
+    this.gameService.startGame();
   }
 
-  endGame() {
-    this.gameService.endGame();
-    this.timers = [this.difficultyTimer - 1];
-    this.gameIsOver = true;
+  private pauseGame(): void {
+    this.gameService.pauseGame();
+  }
+
+  private resumeGame(): void {
+    this.gameService.resumeGame();
   }
 }

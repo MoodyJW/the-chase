@@ -1,18 +1,62 @@
-<div class="the-board">
-  <button (click)="startGame()">start</button>
-  <button (click)="resetGame()">reset</button>
-  <button (click)="pauseGame()">pause</button>
-  <button (click)="resumeGame()">resume</button>
-  <div class="play-area">
-    <div *ngFor="let timer of timers; index as i">
-      <div
-        (click)="resetDot(i)"
-        class="dot"
-        *ngIf="timer <= difficultyTimer && !gameIsOver; else gameOverBlock"
+<div class="actions-container">
+  <button (click)="updateGameState()">
+    <ng-container *ngIf="gameIsRunning$ | async">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-player-pause"
+        width="44"
+        height="44"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-        {{ timer }}
-      </div>
-      <ng-template #gameOverBlock> GAME OVER </ng-template>
-    </div>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <rect x="6" y="5" width="4" height="14" rx="1" />
+        <rect x="14" y="5" width="4" height="14" rx="1" />
+      </svg>
+    </ng-container>
+    <ng-container *ngIf="!(gameIsRunning$ | async)">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-player-play"
+        width="44"
+        height="44"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M7 4v16l13 -8z" />
+      </svg>
+    </ng-container>
+  </button>
+  <button [disabled]="gameIsRunning$ | async" (click)="resetGame()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon icon-tabler icon-tabler-refresh"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+      <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+    </svg>
+  </button>
+</div>
+<div class="the-board">
+  <div class="play-area">
+    <app-the-dots></app-the-dots>
   </div>
 </div>

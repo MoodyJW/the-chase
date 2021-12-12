@@ -4,14 +4,14 @@
 - [x] reset
 - [x] game over
 - [ ] maybe inputs for difficulty settings (more dots, less time, etc)
-- [ ] disable buttons based on current state (start disabled while running, etc)
-- [ ] move dot when it's clicked
-- [ ] maybe have chaos setting where all dots move when one is clicked?
+- [x] disable buttons based on current state (start disabled while running, etc)
+- [x] move dot when it's clicked
+- [x] maybe have chaos setting where all dots move when one is clicked?
 - [ ] styles
   - [ ] buttons
   - [ ] dots
     - [ ] might add some sort of animation for the timer
   - [ ] board
-    - [ ] need to contain the dots
+    - [x] need to contain the dots
     - [ ] not really sure what it will look like overall
 - [ ] write some tests...
