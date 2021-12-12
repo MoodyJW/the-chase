@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TheDotComponent } from './the-dot.component';
+import { TheDotComponent } from './the-dots.component';
 
 describe('TheDotComponent', () => {
   let component: TheDotComponent;
@@ -8,9 +8,8 @@ describe('TheDotComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TheDotComponent ]
-    })
-    .compileComponents();
+      declarations: [TheDotComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

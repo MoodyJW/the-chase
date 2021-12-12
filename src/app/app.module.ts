@@ -5,10 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { TheBoardComponent } from './components/the-board/the-board.component';
-import { TheDotComponent } from './components/the-dot/the-dot.component';
+import { TheDotsComponent } from './components/the-dots/the-dots.component';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, TheBoardComponent, TheDotComponent],
+  declarations: [
+    AppComponent,
+    MainComponent,
+    TheBoardComponent,
+    TheDotsComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent],
