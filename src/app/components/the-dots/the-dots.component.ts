@@ -2,7 +2,6 @@ import {
   Component,
   HostListener,
   Inject,
-  Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -31,8 +30,8 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   gameIsPaused$ = this.gameService.gameIsPaused$;
 
   dotSize = 100;
-  difficultyLength = 10;
-  difficultyTimer = 11;
+  difficultyLength = 5;
+  difficultyTimer = 111;
   paddingPixelsCombined = 32;
   boardHeightPercentage = 0.8;
   boardWidth: number;
@@ -41,6 +40,10 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   timers: any[] = [this.difficultyTimer - 1];
 
   isDisplayed = false;
+  gameClock: number | string;
+  gameClockMax = 6;
+  readonly gameClockMin = -1;
+  gameClock$: Observable<number | string>;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -52,9 +55,18 @@ export class TheDotsComponent implements OnInit, OnDestroy {
     this.setBoardDimensions();
   }
 
+  value(index) {
+    return index;
+  }
+
   ngOnInit(): void {
     this.setBoardDimensions();
-    this.gameService.createDots(this.difficultyLength);
+    this.gameService.setGameDifficulties(
+      this.gameClockMax,
+      this.difficultyLength,
+      this.difficultyTimer
+    );
+    this.gameService.createDots();
     this.subscribeToGameStates();
     this.buildTimers();
   }
@@ -66,6 +78,14 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   buildTimers(): void {
     Array.from(Array(this.difficultyLength).keys()).map((item, index) => {
       this.timers$.push(this.gameService.getTime(index, this.difficultyTimer));
+    });
+    this.gameClock$ = this.gameService.getGameClock(this.gameClockMax);
+    this.gameClock$.subscribe((time) => {
+      if (time === this.gameClockMin) {
+        this.gameClock = this.gameClockMax;
+        return;
+      }
+      this.gameClock = time;
     });
     this.timers$.forEach((time$, index) => {
       if (index > this.difficultyLength - 1) return;
@@ -86,7 +106,10 @@ export class TheDotsComponent implements OnInit, OnDestroy {
         filter((isPaused: boolean) => isPaused),
         takeUntil(this.unsubscribe$)
       )
-      .subscribe(() => this.gameService.updateTimers(this.timers));
+      .subscribe(() => {
+        this.gameService.updateTimers(this.timers);
+        this.gameService.updateGameClock(this.gameClock);
+      });
 
     this.gameIsOver$
       .pipe(
@@ -105,6 +128,16 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.timers = [this.difficultyTimer - 1];
+        this.document.getElementById('0').style.transform = 'unset';
+      });
+
+    this.gameService.gameClockNeedsReset$
+      .pipe(
+        filter((needsReset: boolean) => needsReset),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(() => {
+        this.gameService.updateGameClock(this.gameClockMax);
       });
   }
 
@@ -145,17 +178,21 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   }
 
   resetDot(index: number): void {
-    this.gameService.resetTimer(index);
     if (this.timers.length < this.difficultyLength) {
-      this.timers.push(this.difficultyTimer);
-      this.gameService.resetTimer(this.timers.length - 1);
+      this.gameService.resetTimer(index);
     }
-    const btns = Array.from(this.document.getElementsByClassName('dot'));
-    btns.forEach((btn) => {
-      const dimensions: { x: number; y: number } = this.random();
-      const dotElem = btn as HTMLButtonElement;
-      dotElem.style.transform = `translateX(${dimensions.x}px) translateY(${dimensions.y}px)`;
-    });
+    const btn = this.document.getElementById(index.toString());
+    const dotElem = btn as HTMLButtonElement;
+    const dimensions: { x: number; y: number } = this.random();
+    dotElem.style.transform = `translateX(${dimensions.x}px) translateY(${dimensions.y}px)`;
+
+    // MIGHT USE THIS FOR CHAOS MODE??
+    // const btns = Array.from(this.document.getElementsByClassName('dot'));
+    // btns.forEach((btn) => {
+    //   const dimensions: { x: number; y: number } = this.random();
+    //   const dotElem = btn as HTMLButtonElement;
+    //   dotElem.style.transform = `translateX(${dimensions.x}px) translateY(${dimensions.y}px)`;
+    // });
   }
 
   endGame(): void {

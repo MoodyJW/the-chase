@@ -1,4 +1,28 @@
+<div>{{ gameClock }}</div>
 <ng-container *ngIf="!(gameIsOver$ | async); else gameOverBlock">
+  <ng-container *ngFor="let timer of timers; trackBy: value; index as i">
+    <button
+      class="dot"
+      id="{{ i }}"
+      [style]="{
+        height: dotSize.toString() + 'px',
+        width: dotSize.toString() + 'px'
+      }"
+      (click)="resetDot(i)"
+      [disabled]="!(gameIsRunning$ | async)"
+    >
+      {{ i }} - {{ timers[i] }}
+    </button>
+  </ng-container>
+</ng-container>
+<ng-template #gameOverBlock>
+  <div *ngIf="isDisplayed" @container class="game-over">
+    <div @enterExitLeft>game</div>
+    <div @enterExitRight>over</div>
+  </div>
+</ng-template>
+
+<!-- <ng-container *ngIf="!(gameIsOver$ | async); else gameOverBlock">
   <button
     class="dot"
     id="0"
@@ -129,10 +153,4 @@
   >
     {{ timers[9] }}
   </button>
-</ng-container>
-<ng-template #gameOverBlock>
-  <div *ngIf="isDisplayed" @container class="game-over">
-    <div @enterExitLeft>game</div>
-    <div @enterExitRight>over</div>
-  </div>
-</ng-template>
+</ng-container> -->
