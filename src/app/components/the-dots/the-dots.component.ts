@@ -128,7 +128,9 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.timers = [this.difficultyTimer - 1];
+        this.document.getElementById('0').style.transform = 'unset';
       });
+
     this.gameService.gameClockNeedsReset$
       .pipe(
         filter((needsReset: boolean) => needsReset),
@@ -176,10 +178,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   }
 
   resetDot(index: number): void {
-    console.log(`${index} button id`);
-
     if (this.timers.length < this.difficultyLength) {
-      // this.timers.push(this.difficultyTimer);
       this.gameService.resetTimer(index);
     }
     const btn = this.document.getElementById(index.toString());
