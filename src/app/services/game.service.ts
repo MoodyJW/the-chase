@@ -98,6 +98,7 @@ export class GameService {
 
   resetGame(): void {
     this.stopDots();
+    this.gameClock$.next('pause');
     this.gameIsRunning$.next(false);
     this.gameIsPaused$.next(false);
     this.gameIsOver$.next(false);
@@ -105,6 +106,7 @@ export class GameService {
 
   endGame(): void {
     this.stopDots();
+    this.gameClock$.next('pause');
     this.gameIsPaused$.next(false);
     this.gameIsRunning$.next(false);
     this.gameIsOver$.next(true);
@@ -160,7 +162,6 @@ export class GameService {
           map((secondsRemaining) => {
             console.log(secondsRemaining);
             if (secondsRemaining === 0) {
-              debugger;
               if (this.timers.length < this.difficultyLength) {
                 this.timers.push(this.difficultyTimer);
                 this.gameClock$.next('start');
