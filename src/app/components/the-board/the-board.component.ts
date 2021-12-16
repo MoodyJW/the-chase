@@ -16,7 +16,10 @@ export interface Dot {
 export class TheBoardComponent {
   gameIsRunning$ = this.gameService.gameIsRunning$;
   gameIsPaused$ = this.gameService.gameIsPaused$;
-
+  gameClock$;
+  gameClockMax = 6;
+  readonly gameClockMin = -1;
+  gameClock;
   constructor(private gameService: GameService) {}
 
   updateGameState(): void {
@@ -32,6 +35,7 @@ export class TheBoardComponent {
   }
 
   private startGame(): void {
+    this.getGameClock();
     this.gameService.startGame();
   }
 
@@ -41,5 +45,16 @@ export class TheBoardComponent {
 
   private resumeGame(): void {
     this.gameService.resumeGame();
+  }
+
+  private getGameClock(): void {
+    this.gameClock$ = this.gameService.getGameClock(this.gameClockMax);
+    this.gameClock$.subscribe((time) => {
+      if (time === this.gameClockMin) {
+        this.gameClock = this.gameClockMax;
+        return;
+      }
+      this.gameClock = time;
+    });
   }
 }

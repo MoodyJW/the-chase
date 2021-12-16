@@ -16,16 +16,26 @@ export const container = [
 export const enterExitLeft = [
   trigger('enterExitLeft', [
     transition(':enter', [
-      style({ opacity: 0, transform: 'translateX(-200px)' }),
+      style({
+        opacity: 0,
+        transform: 'translateX(-20vw)',
+        textShadow: '0 0 32px white',
+      }),
       animate(
-        '300ms ease-in',
-        style({ opacity: 1, transform: 'translateX(0)' })
+        '666ms ease-out',
+        style({
+          opacity: 1,
+          transform: 'translateX(0)',
+        })
       ),
     ]),
     transition(':leave', [
       animate(
-        '300ms ease-in',
-        style({ opacity: 0, transform: 'translateX(-200px)' })
+        '666ms ease-in',
+        style({
+          opacity: 0,
+          transform: 'translateX(-20vw)',
+        })
       ),
     ]),
   ]),
@@ -34,16 +44,20 @@ export const enterExitLeft = [
 export const enterExitRight = [
   trigger('enterExitRight', [
     transition(':enter', [
-      style({ opacity: 0, transform: 'translateX(200px)' }),
+      style({
+        opacity: 0,
+        transform: 'translateX(20vw)',
+        textShadow: '0 0 32px white',
+      }),
       animate(
-        '300ms ease-in',
+        '666ms ease-out',
         style({ opacity: 1, transform: 'translateX(0)' })
       ),
     ]),
     transition(':leave', [
       animate(
-        '300ms ease-in',
-        style({ opacity: 0, transform: 'translateX(200px)' })
+        '666ms ease-in',
+        style({ opacity: 0, transform: 'translateX(20vw)' })
       ),
     ]),
   ]),
