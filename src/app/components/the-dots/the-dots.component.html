@@ -1,8 +1,7 @@
 <div>{{ gameClock }}</div>
-<ng-container *ngIf="!(gameIsOver$ | async)">
+<ng-container *ngIf="!(gameIsOver$ | async); else gameOverBlock">
   <ng-container *ngFor="let timer of timers; trackBy: value; index as i">
     <button
-      [@dotFadeInOut]
       class="dot"
       id="{{ i }}"
       [style]="{
@@ -16,6 +15,142 @@
     </button>
   </ng-container>
 </ng-container>
-<ng-container *ngIf="isDisplayed && gameIsOver$ | async">
-  <app-game-over></app-game-over>
-</ng-container>
+<ng-template #gameOverBlock>
+  <div *ngIf="isDisplayed" @container class="game-over">
+    <div @enterExitLeft>game</div>
+    <div @enterExitRight>over</div>
+  </div>
+</ng-template>
+
+<!-- <ng-container *ngIf="!(gameIsOver$ | async); else gameOverBlock">
+  <button
+    class="dot"
+    id="0"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[0]"
+    (click)="resetDot(0)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[0] }}
+  </button>
+  <button
+    class="dot"
+    id="1"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[1]"
+    (click)="resetDot(1)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[1] }}
+  </button>
+  <button
+    class="dot"
+    id="2"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[2]"
+    (click)="resetDot(2)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[2] }}
+  </button>
+  <button
+    class="dot"
+    id="3"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[3]"
+    (click)="resetDot(3)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[3] }}
+  </button>
+  <button
+    class="dot"
+    id="4"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[4]"
+    (click)="resetDot(4)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[4] }}
+  </button>
+  <button
+    class="dot"
+    id="5"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[5]"
+    (click)="resetDot(5)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[5] }}
+  </button>
+  <button
+    class="dot"
+    id="6"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[6]"
+    (click)="resetDot(6)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[6] }}
+  </button>
+  <button
+    class="dot"
+    id="7"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[7]"
+    (click)="resetDot(7)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[7] }}
+  </button>
+  <button
+    class="dot"
+    id="8"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[8]"
+    (click)="resetDot(8)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[8] }}
+  </button>
+  <button
+    class="dot"
+    id="9"
+    [style]="{
+      height: dotSize.toString() + 'px',
+      width: dotSize.toString() + 'px'
+    }"
+    *ngIf="!!timers[9]"
+    (click)="resetDot(9)"
+    [disabled]="!(gameIsRunning$ | async)"
+  >
+    {{ timers[9] }}
+  </button>
+</ng-container> -->

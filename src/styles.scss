@@ -13,6 +13,8 @@
   --secondary-background: rgba(75, 75, 75, 1);
   --primary-border-color: #ffffffee;
   --primary-text-color: #ffffffee;
+  --random: random();
+  --random-number: random() * 1px;
 }
 
 body {
