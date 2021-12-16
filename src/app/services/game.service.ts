@@ -98,7 +98,7 @@ export class GameService {
 
   resetGame(): void {
     this.stopDots();
-    this.gameClock$.next('pause');
+    this.gameClock$.next('');
     this.gameIsRunning$.next(false);
     this.gameIsPaused$.next(false);
     this.gameIsOver$.next(false);
@@ -160,10 +160,10 @@ export class GameService {
         );
         const startClock$ = startObs$.pipe(
           map((secondsRemaining) => {
-            console.log(secondsRemaining);
             if (secondsRemaining === 0) {
               if (this.timers.length < this.difficultyLength) {
                 this.timers.push(this.difficultyTimer);
+                this.resetTimer(this.timers.lastIndexOf(this.difficultyTimer));
                 this.gameClock$.next('start');
               }
             }
@@ -176,7 +176,6 @@ export class GameService {
         returnValue$ = this.gameClock$;
         break;
       case 'resume':
-        console.log(startTime);
         const resumeObs$ = timer(0, 1000).pipe(
           scan((acc) => --acc, this.gameClock + 1),
           take(startTime)
@@ -194,7 +193,7 @@ export class GameService {
         returnValue$ = resumeClock$;
         break;
       default:
-        return of('0');
+        return of(5);
     }
     return returnValue$;
   }

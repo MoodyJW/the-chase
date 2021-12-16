@@ -1,4 +1,3 @@
-<div>{{ gameClock }}</div>
 <ng-container *ngIf="!(gameIsOver$ | async)">
   <ng-container *ngFor="let timer of timers; trackBy: value; index as i">
     <button
@@ -12,7 +11,7 @@
       (click)="resetDot(i)"
       [disabled]="!(gameIsRunning$ | async)"
     >
-      {{ i }} - {{ timers[i] }}
+      {{ timers[i] }}
     </button>
   </ng-container>
 </ng-container>

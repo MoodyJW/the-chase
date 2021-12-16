@@ -27,7 +27,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
 
   dotSize = 100;
   difficultyLength = 5;
-  difficultyTimer = 2;
+  difficultyTimer = 11; // TIMER NEEDS TO BE +1 TO DISPLAY TIME PROPERLY
   paddingPixelsCombined = 32;
   boardHeightPercentage = 0.8;
   boardWidth: number;
@@ -84,7 +84,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       this.gameClock = time;
     });
     this.timers$.forEach((time$, index) => {
-      if (index > this.difficultyLength - 1) return;
+      if (index >= this.difficultyLength) return;
       time$.pipe(takeUntil(this.unsubscribe$)).subscribe((time) => {
         if (time === 0) {
           this.endGame();
@@ -115,6 +115,9 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.timers = [this.difficultyTimer - 1];
         this.gameService.updateTimers(this.timers);
+        let dotElem = this.document.getElementById('0');
+        if (!dotElem) return;
+        dotElem.style.transform = `translateX(0px) translateY(0px)`;
       });
 
     this.gameService.timersNeedReset$
@@ -124,10 +127,6 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.timers = [this.difficultyTimer - 1];
-        let dotElem = this.document.getElementById('0');
-        if (!dotElem) return;
-        dotElem.style.transition = `all 0.666ms ease-in-out`;
-        dotElem.style.transform = `translateX(0px) translateY(0px)`;
       });
 
     this.gameService.gameClockNeedsReset$
@@ -137,6 +136,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.gameService.updateGameClock(this.gameClockMax);
+        this.gameService.updateTimers(this.timers);
       });
   }
 
@@ -177,9 +177,8 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   }
 
   resetDot(index: number): void {
-    if (this.timers.length < this.difficultyLength) {
-      this.gameService.resetTimer(index);
-    }
+    this.gameService.resetTimer(index);
+    debugger;
     const btn = this.document.getElementById(index.toString());
     const dotElem = btn as HTMLButtonElement;
     const dimensions: { x: number; y: number } = this.random();
