@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { TheBoardComponent } from './components/the-board/the-board.component';
 import { TheDotsComponent } from './components/the-dots/the-dots.component';
+import { GameOverComponent } from './components/game-over/game-over.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TheDotsComponent } from './components/the-dots/the-dots.component';
     MainComponent,
     TheBoardComponent,
     TheDotsComponent,
+    GameOverComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
   providers: [],

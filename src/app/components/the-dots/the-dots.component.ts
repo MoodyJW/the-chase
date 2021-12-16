@@ -10,17 +10,13 @@ import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { GameService } from 'src/app/services/game.service';
-import {
-  container,
-  enterExitRight,
-  enterExitLeft,
-} from '../../animations/game-over-animation';
+import { dotFadeInOut } from 'src/app/animations/dot-fade.animation';
 
 @Component({
   selector: 'app-the-dots',
   templateUrl: './the-dots.component.html',
   styleUrls: ['./the-dots.component.scss'],
-  animations: [container, enterExitRight, enterExitLeft],
+  animations: [dotFadeInOut],
 })
 export class TheDotsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
@@ -31,7 +27,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
 
   dotSize = 100;
   difficultyLength = 5;
-  difficultyTimer = 111;
+  difficultyTimer = 2;
   paddingPixelsCombined = 32;
   boardHeightPercentage = 0.8;
   boardWidth: number;
@@ -128,7 +124,10 @@ export class TheDotsComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.timers = [this.difficultyTimer - 1];
-        this.document.getElementById('0').style.transform = 'unset';
+        let dotElem = this.document.getElementById('0');
+        if (!dotElem) return;
+        dotElem.style.transition = `all 0.666ms ease-in-out`;
+        dotElem.style.transform = `translateX(0px) translateY(0px)`;
       });
 
     this.gameService.gameClockNeedsReset$
