@@ -166,6 +166,13 @@ export class GameService {
                 this.resetTimer(this.timers.lastIndexOf(this.difficultyTimer));
                 this.gameClock$.next('start');
               }
+            } else if (
+              secondsRemaining === 5 &&
+              this.dots$[this.timers.lastIndexOf(this.difficultyTimer)]
+            ) {
+              this.dots$[this.timers.lastIndexOf(this.difficultyTimer)].next(
+                'start'
+              );
             }
             return secondsRemaining;
           })
