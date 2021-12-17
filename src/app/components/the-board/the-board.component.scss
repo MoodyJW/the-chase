@@ -1,14 +1,32 @@
-.actions-container {
-  display: flex;
-  place-items: center;
-  place-content: flex-end;
-  gap: 1em;
-  margin: 0 0 1em 0;
+@-webkit-keyframes border-blink {
+  from,
+  to {
+    border-color: white;
+  }
+  50% {
+    border-color: red;
+  }
+}
+@keyframes border-blink {
+  from,
+  to {
+    border-color: white;
+  }
+  50% {
+    border-color: red;
+  }
 }
 
 .the-board {
   height: 80vh;
+  border: 1px solid;
+  padding: 12px;
+  transition: all 333ms ease-in-out;
 
+  &.blinking {
+    -webkit-animation: border-blink 1s infinite;
+    animation: border-blink 1s infinite;
+  }
   .play-area {
     height: 100%;
     position: relative;

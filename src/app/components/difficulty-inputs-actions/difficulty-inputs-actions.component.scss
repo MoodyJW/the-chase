@@ -1,0 +1,24 @@
+.inputs-and-actions-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1em;
+
+  .game-clock-container {
+    font-size: 1.5em;
+  }
+
+  .actions-container {
+    display: flex;
+    gap: 1em;
+
+    .action-button {
+      &:hover:enabled {
+        cursor: pointer;
+      }
+      &:hover:disabled {
+        cursor: default;
+      }
+    }
+  }
+}
