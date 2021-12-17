@@ -178,7 +178,6 @@ export class TheDotsComponent implements OnInit, OnDestroy {
 
   resetDot(index: number): void {
     this.gameService.resetTimer(index);
-    debugger;
     const btn = this.document.getElementById(index.toString());
     const dotElem = btn as HTMLButtonElement;
     const dimensions: { x: number; y: number } = this.random();
