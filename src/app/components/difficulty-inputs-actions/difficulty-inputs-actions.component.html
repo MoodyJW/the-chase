@@ -1,6 +1,10 @@
 <div class="inputs-and-actions-container">
   <div class="settings-container">
-    <button class="settings-button" (click)="openSettingsDialog()">
+    <button
+      [disabled]="gameIsRunning$ | async"
+      class="action-button"
+      (click)="openSettingsDialog()"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="icon icon-tabler icon-tabler-settings"

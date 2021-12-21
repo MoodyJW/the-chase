@@ -1,7 +1,10 @@
 <div class="actions-container">
   <app-difficulty-inputs-actions></app-difficulty-inputs-actions>
 </div>
-<div class="the-board" [class.blinking]="borderIsBlinking">
+<div
+  class="the-board"
+  [class.blinking]="borderIsBlinking || (gameIsOver$ | async)"
+>
   <div class="play-area">
     <app-the-dots (emitTimers)="setTimers($event)"></app-the-dots>
   </div>

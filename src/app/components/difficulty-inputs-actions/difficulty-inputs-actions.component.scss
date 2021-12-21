@@ -11,14 +11,14 @@
   .actions-container {
     display: flex;
     gap: 1em;
+  }
 
-    .action-button {
-      &:hover:enabled {
-        cursor: pointer;
-      }
-      &:hover:disabled {
-        cursor: default;
-      }
+  .action-button {
+    &:hover:enabled {
+      cursor: pointer;
+    }
+    &:hover:disabled {
+      cursor: default;
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GameService } from 'src/app/services/game.service';
 
 export interface Dot {
   timer: Observable<number>;
@@ -13,6 +14,9 @@ export interface Dot {
 })
 export class TheBoardComponent {
   borderIsBlinking = false;
+  gameIsOver$ = this.gameService.gameIsOver$;
+
+  constructor(private gameService: GameService) {}
 
   setTimers(dotTimersEvent: Observable<string | number>[]) {
     dotTimersEvent.forEach((timer) => {
