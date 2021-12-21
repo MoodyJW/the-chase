@@ -5,11 +5,12 @@
 - [x] game over
 - [x] disable buttons based on current state (start disabled while running, etc)
 - [x] move dot when it's clicked
-- [x] maybe have chaos setting where all dots move when one is clicked?
+- [ ] maybe have chaos setting where all dots move when one is clicked?
+- [ ] consider rewriting the service, it's a little chaotic and might have redundant functionality
 - [ ] styles
-  - [ ] game over animation
-    - [ ] adjust positioning and size
-    - [ ] tune animation timing/positioning
+  - [x] game over animation
+    - [x] adjust positioning and size
+    - [x] tune animation timing/positioning
   - [ ] buttons
     - [x] basic icons
     - [ ] not sure yet

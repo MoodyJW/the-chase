@@ -1,9 +1,11 @@
 import {
   Component,
+  EventEmitter,
   HostListener,
   Inject,
   OnDestroy,
   OnInit,
+  Output,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Observable, Subject } from 'rxjs';
@@ -19,6 +21,7 @@ import { dotFadeInOut } from 'src/app/animations/dot-fade.animation';
   animations: [dotFadeInOut],
 })
 export class TheDotsComponent implements OnInit, OnDestroy {
+  @Output() emitTimers = new EventEmitter();
   unsubscribe$ = new Subject();
   timers$: Observable<number | string>[] = [];
   gameIsRunning$ = this.gameService.gameIsRunning$;
@@ -28,8 +31,8 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   dotSize = 100;
   difficultyLength = 5;
   difficultyTimer = 11; // TIMER NEEDS TO BE +1 TO DISPLAY TIME PROPERLY
-  paddingPixelsCombined = 32;
-  boardHeightPercentage = 0.8;
+  widthReduction = 94;
+  heightReduction = 0.75;
   boardWidth: number;
   boardHeight: number;
 
@@ -94,6 +97,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
         this.setColor(time, index);
       });
     });
+    this.emitTimers.emit(this.timers$);
   }
 
   subscribeToGameStates(): void {
@@ -141,11 +145,11 @@ export class TheDotsComponent implements OnInit, OnDestroy {
   }
 
   setBoardDimensions(): void {
-    this.boardWidth = window.innerWidth - this.paddingPixelsCombined;
-    this.boardHeight = window.innerHeight * this.boardHeightPercentage;
+    this.boardWidth = window.innerWidth - this.widthReduction;
+    this.boardHeight = window.innerHeight * this.heightReduction;
   }
 
-  setColor(time: number | string, index: number): void {
+  private setColor(time: number | string, index: number): void {
     const btn = this.document.getElementById(index.toString());
     if (!btn) return;
     if (time > this.difficultyTimer * 0.66 || time === '0') {
@@ -155,21 +159,21 @@ export class TheDotsComponent implements OnInit, OnDestroy {
     }
     if (
       time > this.difficultyTimer * 0.44 &&
-      time < this.difficultyTimer * 0.66
+      time < this.difficultyTimer * 0.55
     ) {
       btn.style.backgroundColor = 'yellow';
       btn.style.zIndex = '2';
       return;
     }
     if (
-      time > this.difficultyTimer * 0.22 &&
-      time < this.difficultyTimer * 0.44
+      time > this.difficultyTimer * 0.33 &&
+      time < this.difficultyTimer * 0.55
     ) {
       btn.style.backgroundColor = 'pink';
       btn.style.zIndex = '3';
       return;
     }
-    if (time <= this.difficultyTimer * 0.22) {
+    if (time <= this.difficultyTimer * 0.33) {
       btn.style.backgroundColor = 'red';
       btn.style.zIndex = '4';
       return;
@@ -178,6 +182,7 @@ export class TheDotsComponent implements OnInit, OnDestroy {
 
   resetDot(index: number): void {
     this.gameService.resetTimer(index);
+
     const btn = this.document.getElementById(index.toString());
     const dotElem = btn as HTMLButtonElement;
     const dimensions: { x: number; y: number } = this.random();

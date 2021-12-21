@@ -8,16 +8,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-:root {
-  --primary-background: #333;
-  --secondary-background: rgba(75, 75, 75, 1);
-  --primary-border-color: #ffffffee;
-  --primary-text-color: #ffffffee;
-}
-
 body {
-  background: var(--primary-background);
-  color: var(--primary-text-color);
+  background: black;
+  color: #ffffffee;
   font-size: 16px;
   font-family: "Fira Mono", monospace, "Roboto Mono", monospace;
   min-height: 100vh;

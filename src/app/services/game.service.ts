@@ -155,12 +155,12 @@ export class GameService {
     switch (state) {
       case 'start':
         const startObs$ = timer(0, 1000).pipe(
-          scan((acc) => --acc, startTime),
-          take(startTime)
+          scan((acc) => --acc, this.gameClock),
+          take(startTime + 1)
         );
         const startClock$ = startObs$.pipe(
           map((secondsRemaining) => {
-            if (secondsRemaining === 0) {
+            if (secondsRemaining === -1) {
               if (this.timers.length < this.difficultyLength) {
                 this.timers.push(this.difficultyTimer);
                 this.resetTimer(this.timers.lastIndexOf(this.difficultyTimer));
